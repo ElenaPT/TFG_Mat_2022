@@ -21,7 +21,7 @@ v4 = np.array([0, math.sin(math.pi/5), -math.sin(2*math.pi/5), math.sin(2*math.p
 m1 = np.array([p0,a1a2,a1a3,a1a4,a1a5])
 m2 = np.array([v3,v4])
 
-m3 = np.dot(m1,m2.transpose())
+m3 = math.sqrt(2/5)*np.dot(m1,m2.transpose())
 
 print(m3)
 print(m3[:,0])
