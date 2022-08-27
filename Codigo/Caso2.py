@@ -5,12 +5,9 @@ Created on Tue Aug 23 20:42:11 2022
 @author: X
 """
 
-import os
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-from scipy.spatial import ConvexHull, convex_hull_plot_2d
-from itertools import chain, combinations
 
 
 #Vértices de V^*(q_2^*)
@@ -34,10 +31,6 @@ m2 = np.array([v3,v4])
 
 m3 = math.sqrt(2/5)*np.dot(m1,m2.transpose())
 
-plt.gca().set_aspect('equal', adjustable='box')
-plt.plot(m3[:,0],m3[:,1],'o')
-plt.show()
-
 
 #Matriz de adyacencia. Contiene un 1 si los vértices están a distancia \sqrt{2} y un 0 si no
 adjMatrix = np.zeros(shape=(10,10))
@@ -46,5 +39,27 @@ for i in range(0, 9):
     for j in range(i+1, 10):
         if math.dist(m1[i,:], m1[j,:])==math.sqrt(2):
             adjMatrix[i,j]=1
+            
 
-print(adjMatrix)
+#Elección de triplas de vértices que forman triángulos equiláteros
+triangles = np.empty((0,3), int)
+
+for i in range(0,9):
+    for j in range(i+1,9):
+        if adjMatrix[i,j]==1:
+            for k in range(i+2,10):
+                if adjMatrix[i,k]==1 and adjMatrix[j,k]==1:
+                    triangles = np.append(triangles, np.array([[i,j,k]]), axis=0)
+                    
+print(triangles)
+                    
+
+#Se pintan los vértices resultado de la proyección y se calcula la envolvente convexa de cada triángulo
+plt.gca().set_aspect('equal', adjustable='box')
+plt.plot(m3[:,0],m3[:,1],'o')
+for triangle in triangles:
+    set = np.array([m3[triangle[0]], m3[triangle[1]], m3[triangle[2]]])
+    hull = ConvexHull(set)
+    for simplex in hull.simplices:
+        plt.plot(set[simplex, 0], set[simplex, 1], 'k-')
+plt.show()
