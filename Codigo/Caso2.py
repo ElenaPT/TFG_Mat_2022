@@ -8,6 +8,7 @@ Created on Tue Aug 23 20:42:11 2022
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+from scipy.spatial import ConvexHull
 
 
 #Vértices de V^*(q_2^*)
