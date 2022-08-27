@@ -38,3 +38,13 @@ plt.gca().set_aspect('equal', adjustable='box')
 plt.plot(m3[:,0],m3[:,1],'o')
 plt.show()
 
+
+#Matriz de adyacencia. Contiene un 1 si los vértices están a distancia \sqrt{2} y un 0 si no
+adjMatrix = np.zeros(shape=(10,10))
+
+for i in range(0, 9):
+    for j in range(i+1, 10):
+        if math.dist(m1[i,:], m1[j,:])==math.sqrt(2):
+            adjMatrix[i,j]=1
+
+print(adjMatrix)
