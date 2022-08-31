@@ -17,6 +17,7 @@ v2 = np.array([0,S,Sp,-Sp,-S])
 
 m2 = np.array([v1,v2])
 
+plt.gca().set_aspect('equal', adjustable='box')
 
 #Rombo1
 r1_1 = np.array([1,0,0,0,0])
