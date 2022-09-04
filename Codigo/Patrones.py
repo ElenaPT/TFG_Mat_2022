@@ -2,9 +2,30 @@
 import numpy as np
 
 
-c1 = np.array(['+','-','O','-','O'])
+v1 = np.array([0,0,0,0,0])
+v2 = np.array([1,-1,0,0,0])
+v3 = np.array([1,0,0,-1,0])
 
 
+#Metodo que calcula la representacion simbolica del politopo dual dado por
+# los tres vertices v1,v2,v3
+def dual_p(v1,v2,v3):
+    ret = np.array(['','','','',''])
+    v2p = np.subtract(v2,v1)
+    v3p = np.subtract(v3,v1)
+    for i in range(0,ret.size):
+        if v2p[i]==0 and v3p[i]==0:
+            ret[i]='O'
+        else:
+            if v2p[i]==1 or v3p[i]==1:
+                ret[i]='+'
+            else:
+                ret[i]='-'
+    return ret
+
+
+#Metodo que calcula la representacion simbolica de los vertices de un
+# politopo a partir de la prepresentacion simbolica del mismo
 def facet_vertices(a):
     #ret = np.empty((0,5), chr)
     a1 = substitute(a, '+', '+')
@@ -15,10 +36,10 @@ def facet_vertices(a):
     return np.array([a1,a2,a3,a4])
     
     
+#Metodo auxiliar
 def substitute(a, s1, s2):
     ret = a.copy()
     flag = 0
-    #print("flag: ", flag, ", s1: ", s1, ", s2: ", s2)
     for i in range(0, ret.size):
         if a[i]=='O':
             if flag==0:
@@ -30,6 +51,8 @@ def substitute(a, s1, s2):
     return ret
 
 
+#Metodo que calcula las coordenandas de un vertice a partir de su
+# representacion simbolica
 def p_facet(a):
     s = 1
     ret = np.array([0,0,0,0,0])
@@ -41,8 +64,11 @@ def p_facet(a):
     return ret
 
     
-vertices = facet_vertices(c1)
+pstar = dual_p(v1,v2,v3)
+
+vertices = facet_vertices(pstar)
 print(vertices)
 
 for elem in vertices:
-    print(p_facet(elem))
+    res = np.add(v1,p_facet(elem))
+    print(res)
