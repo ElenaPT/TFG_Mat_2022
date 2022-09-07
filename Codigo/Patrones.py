@@ -118,6 +118,11 @@ def p_facet(a,v1):
     return np.add(ret,v1)
 
 
+#Metodo que devuelve el valor de la funcion r aplicada a un punto
+def r_val(p):
+    return sum(p) % 5
+
+
 
 #--- Programa ---#
 
@@ -128,10 +133,18 @@ def vertex_stars(regions_facets, puntos):
             pol = dual_p(puntos[cara[0]], puntos[cara[1]], puntos[cara[2]])
             pol_vertices = facet_vertices(pol)
             vertices = np.empty((0,2), float)
+            shallow = [False,False,False,False]
+            i = 0
             for v in pol_vertices:
-                coords = math.sqrt(2/5)*np.dot(p_facet(v,puntos[cara[0]]),base.transpose())
+                coords5d = p_facet(v,puntos[cara[0]])
+                coords = math.sqrt(2/5)*np.dot(coords5d,base.transpose())
                 vertices = np.append(vertices, np.array([coords]), axis=0)
-            print(vertices)
+                if r_val(coords5d)==1 or r_val(coords5d)==4:
+                    shallow[i]=True
+                i = i+1
+            for i in range(0,4):
+                if shallow[i]==True:
+                    plt.plot(vertices[i,0],vertices[i,1],'ro',)
     
             hull = ConvexHull(vertices)
             for simplex in hull.simplices:
